@@ -6,7 +6,7 @@ import numpy as np
 
 WHEEL_RADIUS = 41.436
 ENTRAXE = 240
-speed = 3
+speed = 1
 speed_factor = 1.0
 
 def stepper_init(serial_number, hub_port, rescale_factor=1/3200):
@@ -43,14 +43,8 @@ def rotate_left(stepper_left, stepper_right, theta):
 	stepper_left.setVelocityLimit(speed*speed_factor)
 	stepper_right.setVelocityLimit(speed*speed_factor)
 	step = distance/(2*np.pi*WHEEL_RADIUS)
-	stepper_left.setTargetPosition(step)
-	stepper_right.setTargetPosition(step)
-	while abs(distance/260 - stepper_left.getPosition()) >= 1e-2:
-		time.sleep(0.1)
-	stepper_left.addPositionOffset(-stepper_left.getPosition())
-	stepper_right.addPositionOffset(-stepper_right.getPosition())
-	stepper_left.setVelocityLimit(0)
-	stepper_right.setVelocityLimit(0)
+	stepper_left.setTargetPosition(-step/2)
+	stepper_right.setTargetPosition(-step/2)
 	return
 
 stepper_left = stepper_init(723793, 5)

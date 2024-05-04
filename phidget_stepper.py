@@ -1,6 +1,5 @@
 from Phidget22.Phidget import *
 from Phidget22.Devices.Stepper import *
-from robot_config import *
 import time
 import numpy as np
 

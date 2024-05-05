@@ -11,6 +11,16 @@ import sys
 import threading
 from strategy import *
 
+checkout_led = 11
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(checkout_led, GPIO.OUT)
+for i in range(5):
+        GPIO.output(checkout_led, GPIO.HIGH)
+        time.sleep(0.2) 
+
+        GPIO.output(checkout_led, GPIO.LOW)
+        time.sleep(0.2)  
 
 def stop_program():
     time.sleep(90)  
@@ -18,6 +28,7 @@ def stop_program():
     stepper_right.close()
     GPIO.cleanup()
     sys.exit()
+
 
 def find_screen_port():
     stlink_ports = [port.device for port in serial.tools.list_ports.comports() if "ST-Link" in port.description]
@@ -47,7 +58,6 @@ ser.close()
 stepper_left = stepper_init(serial_number, left_hub_port)
 stepper_right = stepper_init(serial_number, right_hub_port)
 
-GPIO.setmode(GPIO.BCM)
 GPIO.setup(start_pin, GPIO.IN)
 previous_state = GPIO.input(start_pin)
 

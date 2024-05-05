@@ -8,8 +8,7 @@ import RPi.GPIO as GPIO
 from phidget_stepper import *
 
 
-def strategy(strategy_number):
-    global speed, stepper_left, stepper_right
+def strategy(strategy_number, stepper_left, stepper_right):
     if strategy_number == 0:
         pass
     elif strategy_number == 1:

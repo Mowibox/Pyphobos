@@ -66,7 +66,7 @@ lidar_data = AresLidar()
 timer_thread = threading.Thread(target=stop_program)
 timer_thread.start()
 
-strategy(strategy_number)
+strategy(strategy_number, stepper_left, stepper_right)
 
 timer_thread.join()
 

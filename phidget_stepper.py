@@ -32,7 +32,7 @@ def move_forward(stepper_left, stepper_right, lidar_data, serial, speed, distanc
         if min_distance_index in [0, 1, 7, 8, 9, 10, 14, 15]:
             threshold = 140
         else:
-            threshold = 310
+            threshold = 370
         if 1 <= min_distance <= threshold:
             speed_factor = 0.0
         elif min_distance >= threshold:

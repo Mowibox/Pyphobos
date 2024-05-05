@@ -48,12 +48,3 @@ def rotate_left(stepper_left, stepper_right, theta):
 	stepper_left.addPositionOffset(-stepper_left.getPosition())
 	stepper_right.addPositionOffset(-stepper_right.getPosition())
 	return
-
-#try:
-#	input("Press Enter to Stop\n")
-#except (Exception, KeyboardInterrupt):
-#	pass
-
-#stepper_left.close()
-#stepper_right.close()
-

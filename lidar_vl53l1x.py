@@ -9,7 +9,6 @@ class AresLidarParsingStatus:
     INFO = 1
     DISTANCE_MES = 2
 
-# Lidar class (Have the same role than a C structure)
 class AresLidar:
     def __init__(self):
         self.parsing_status = AresLidarParsingStatus.BEGIN
@@ -75,32 +74,3 @@ def get_lidar_data(lidar):
 
     return lidar
 
-def main():
-    # Open serial communication
-    ser = serial.Serial("/dev/ttyAMA1", baudrate=115200, timeout=5.0)
-    print("Serial port:", ser.name)
-    ser.flush()
-
-    while True:
-        lidar_data = AresLidar()
-        lidar_data.rx_storage = ser.read(LIDAR_FRAME_SIZE * 2)
-        processed_data = get_lidar_data(lidar_data)
-        distances = [distance[1] for distance in processed_data.measure]
-        min_distance = min(distances)
-
-        # Distance threshold
-        stop_threshold = 450
-
-        robot_speed = 0.0
-
-        # The '20' condition is to prevent data jumps
-        if 20 <= min_distance <= stop_threshold:
-            robot_speed = 0.0
-        else:
-            robot_speed = 1.0
-
-        # Displaying data
-        print("Robot Speed:", robot_speed)
-
-if __name__ == '__main__':
-    main()

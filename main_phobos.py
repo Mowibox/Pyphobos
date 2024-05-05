@@ -13,7 +13,7 @@ from strategy import *
 
 
 def stop_program():
-    time.sleep(10)  
+    time.sleep(90)  
     stepper_left.close()
     stepper_right.close()
     GPIO.cleanup()
@@ -59,17 +59,18 @@ while True:
         break
     time.sleep(0.1)
 
+try:
+    ser1 = serial.Serial("/dev/ttyAMA1", baudrate=115200, timeout=5.0)
+    lidar_data = AresLidar()
 
-ser1 = serial.Serial("/dev/ttyAMA1", baudrate=115200, timeout=5.0)
-lidar_data = AresLidar()
+    timer_thread = threading.Thread(target=stop_program)
+    timer_thread.start()
 
-timer_thread = threading.Thread(target=stop_program)
-timer_thread.start()
+    strategy(strategy_number, stepper_left, stepper_right, lidar_data, ser1)
 
-strategy(strategy_number, stepper_left, stepper_right)
+    timer_thread.join()
 
-timer_thread.join()
-
-stepper_left.close()
-stepper_right.close()
-GPIO.cleanup()
+except (Exception, KeyboardInterrupt):
+    stepper_left.close()
+    stepper_right.close()
+    GPIO.cleanup()

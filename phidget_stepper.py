@@ -28,10 +28,16 @@ def move_forward(stepper_left, stepper_right, lidar_data, serial, speed, distanc
         processed_data = get_lidar_data(lidar_data)
         distances = [distance[1] for distance in processed_data.measure]
         min_distance = min(distances)
-        if 1 <= min_distance <= 370:
+        min_distance_index = distances.index(min_distance) 
+        if min_distance_index in [0, 1, 7, 8, 9, 10, 14, 15]:
+            threshold = 140
+        else:
+            threshold = 310
+        if 1 <= min_distance <= threshold:
             speed_factor = 0.0
-        elif min_distance >= 370:
-            speed_factor = 1.0
+        elif min_distance >= threshold:
+            speed_factor = 1-np.exp(-(min_distance-threshold)/25)
+            
         stepper_left.setVelocityLimit(speed * speed_factor)
         stepper_right.setVelocityLimit(speed * speed_factor)
         time.sleep(0.001)

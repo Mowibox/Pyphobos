@@ -7,9 +7,6 @@ right_hub_port = 0
 
 start_pin = 26
 
-speed = 1
-speed_factor = 1.0
-
 servo_pin = 19
 elevator_hub_port = 2
 turnstile_hub_port = 3

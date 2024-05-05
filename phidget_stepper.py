@@ -18,14 +18,13 @@ def stepper_init(serial_number, hub_port, rescale_factor=1/3200):
 
 	return stepper
 
-def move_forward(stepper_left, stepper_right, distance):
-    global lidar_data, ser1
+def move_forward(stepper_left, stepper_right, lidar_data, serial, speed, distance):
     speed_factor = 1.0
     step = distance / (2 * np.pi * WHEEL_RADIUS)
     stepper_left.setTargetPosition(step)
     stepper_right.setTargetPosition(-step)
     while abs(distance / 260 - stepper_left.getPosition()) >= 1e-2:
-        lidar_data.rx_storage = ser1.read(LIDAR_FRAME_SIZE * 2)
+        lidar_data.rx_storage = serial.read(LIDAR_FRAME_SIZE * 2)
         processed_data = get_lidar_data(lidar_data)
         distances = [distance[1] for distance in processed_data.measure]
         min_distance = min(distances)
@@ -43,7 +42,8 @@ def move_forward(stepper_left, stepper_right, distance):
     return
 
 
-def rotate_left(stepper_left, stepper_right, theta):
+def rotate_left(stepper_left, stepper_right, speed, theta):
+	speed_factor = 1.0
 	distance = np.pi*WHEEL_ENTRAXE*theta/360
 	stepper_left.setVelocityLimit(speed*speed_factor)
 	stepper_right.setVelocityLimit(speed*speed_factor)

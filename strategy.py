@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO
 from phidget_stepper import *
 
 
-def strategy(strategy_number, stepper_left, stepper_right):
+def strategy(strategy_number, stepper_left, stepper_right, lidar_data, serial):
     if strategy_number == 0:
         pass
     elif strategy_number == 1:
@@ -20,21 +20,26 @@ def strategy(strategy_number, stepper_left, stepper_right):
     elif strategy_number == 4:
         pass
     elif strategy_number == 5:
-        move_forward(stepper_left, stepper_right, 1200)
+        speed = 1
+        move_forward(stepper_left, stepper_right,
+         lidar_data, serial, speed, 1200)
         time.sleep(1)
         speed = 2
-        rotate_left(stepper_left, stepper_right, 90)
+        rotate_left(stepper_left, stepper_right, speed, 90)
         time.sleep(0.5)
         speed = 1
-        move_forward(stepper_left, stepper_right, -600)
+        move_forward(stepper_left, stepper_right,
+         lidar_data, serial, speed, -600)
         time.sleep(1)
         speed = 2
-        move_forward(stepper_left, stepper_right, 600)
+        move_forward(stepper_left, stepper_right,
+         lidar_data, serial, speed, 600)
         time.sleep(1)
-        rotate_left(stepper_left, stepper_right, -270)
+        rotate_left(stepper_left, stepper_right, speed, -270)
         time.sleep(0.5)
         speed = 1
-        move_forward(stepper_left, stepper_right, 1200)
+        move_forward(stepper_left, stepper_right,
+         lidar_data, serial, speed, 1200)
     return
 
 

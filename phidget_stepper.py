@@ -49,22 +49,11 @@ def rotate_left(stepper_left, stepper_right, theta):
 	stepper_right.addPositionOffset(-stepper_right.getPosition())
 	return
 
-stepper_left = stepper_init(723793, 5)
-stepper_right = stepper_init(723793, 0)
+#try:
+#	input("Press Enter to Stop\n")
+#except (Exception, KeyboardInterrupt):
+#	pass
 
-rotate_left(stepper_left, stepper_right, 45)
-time.sleep(1)
-move_forward(stepper_left, stepper_right, 600)
-time.sleep(1)
-rotate_left(stepper_left, stepper_right, 90)
-time.sleep(1)
-move_forward(stepper_left, stepper_right, 1200)
-
-try:
-	input("Press Enter to Stop\n")
-except (Exception, KeyboardInterrupt):
-	pass
-
-stepper_left.close()
-stepper_right.close()
+#stepper_left.close()
+#stepper_right.close()
 

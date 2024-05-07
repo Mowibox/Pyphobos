@@ -52,7 +52,14 @@ def strategy(strategy_number, stepper_left, stepper_right, lidar_data, serial):
     elif strategy_number == 5:
         speed = 1
         move_forward(stepper_left, stepper_right,
-         lidar_data, serial, speed, 1200)
+         lidar_data, serial, speed, 1100)
+        time.sleep(1)
+        speed = 2
+        rotate_left(stepper_left, stepper_right, speed, -45)
+        time.sleep(1)
+        speed = 0.5
+        move_forward(stepper_left, stepper_right,
+         lidar_data, serial, speed, np.sqrt(1100**2+1500**2))
     return
 
 

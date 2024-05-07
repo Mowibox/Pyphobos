@@ -48,10 +48,25 @@ def strategy(strategy_number, stepper_left, stepper_right, lidar_data, serial):
         pass
     elif strategy_number == 4:
         speed = 1.5
+        set_angle(45)
+        time.sleep(0.5)
         move_forward(stepper_left, stepper_right,
          lidar_data, serial, speed, -1100)
         time.sleep(1)
         rotate_left(stepper_left, stepper_right, speed, -(180-57))
+        time.sleep(1)
+        speed = 2.5
+        move_forward(stepper_left, stepper_right,
+         lidar_data, serial, speed, -np.sqrt(1000**2+1350**2))
+        time.sleep(1)
+        speed = 1
+        rotate_left(stepper_left, stepper_right, speed, 180-20)
+        speed = 1.5
+        move_forward(stepper_left, stepper_right,
+        lidar_data, serial, speed, 1500)
+        time.sleep(1)
+        rotate_left(stepper_left, stepper_right, speed, -(180-43))
+
     elif strategy_number == 5:
         set_angle(45)
         speed = 1.5

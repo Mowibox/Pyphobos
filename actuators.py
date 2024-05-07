@@ -28,4 +28,6 @@ def set_angle(angle):
     duty_cycle = angle_to_duty_cycle(angle)
     pwm.start(duty_cycle)
     time.sleep(1)  
-    pwm.stop()
+
+
+

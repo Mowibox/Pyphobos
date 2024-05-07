@@ -10,15 +10,17 @@ from phidget_stepper import *
 import sys
 import threading
 from strategy import *
+from actuators import *
 
 checkout_led = 11
 
 
 def stop_program():
-    time.sleep(90)  
+    time.sleep(90)
+    pwm.stop()
+    GPIO.cleanup()  
     stepper_left.close()
     stepper_right.close()
-    GPIO.cleanup()
     sys.exit()
 
 
@@ -80,8 +82,12 @@ try:
     strategy(strategy_number, stepper_left, stepper_right, lidar_data, ser1)
 
     timer_thread.join()
-
-except (Exception, KeyboardInterrupt):
     stepper_left.close()
     stepper_right.close()
     GPIO.cleanup()
+
+except (Exception, KeyboardInterrupt):
+    GPIO.cleanup()
+    stepper_left.close()
+    stepper_right.close()
+    

@@ -1,35 +1,49 @@
 from Phidget22.Phidget import *
 from Phidget22.Devices.Encoder import *
+from robot_config import *
+import numpy as np
 import time
 
-def onPositionChange(self, positionChange, timeChange, indexTriggered):
-	# print("PositionChange: " + str(positionChange))
-	# print("TimeChange: " + str(timeChange))
-	# print("IndexTriggered: " + str(indexTriggered))
-	print("getPosition: " + str(self.getPosition()))
-	print("----------")
 
-def main():
-	encoder1 = Encoder()
-	encoder0 = Encoder()
 
-	encoder1.setHubPort(4)
-	encoder0.setHubPort(1)
-	encoder0.setDeviceSerialNumber(723793)
-	encoder1.setDeviceSerialNumber(723793)
+def encoder_init(serial_number, hub_port):
+	encoder = Encoder()
+	encoder.setHubPort(hub_port)
+	encoder.setDeviceSerialNumber(serial_number)
+	encoder.openWaitForAttachment(5000)
 
-	encoder0.setOnPositionChangeHandler(onPositionChange)
-	encoder1.setOnPositionChangeHandler(onPositionChange)
+	return encoder
 
-	encoder0.openWaitForAttachment(5000)
-	encoder1.openWaitForAttachment(5000)
+def updatePosition(encoder_left, encoder_right, x, y, theta):
+	K = (2*np.pi*ODOMETRY_RADIUS/TICKS_PER_REV)
+	left_mov = K*encoder_left.getPosition()
+	right_mov = -K*encoder_right.getPosition()
+	r = (left_mov + right_mov)/2
+	alpha = (left_mov - right_mov)/ODOMETRY_ENTRAXE
+	dx = r*np.cos(theta + alpha/2)
+	dy = r*np.sin(theta + alpha/2)
+	x += dx
+	y += dy
+	theta += alpha
+	if theta > np.pi:
+		theta -= 2*np.pi
+	elif theta < -np.pi:
+		theta += 2*np.pi
+	return x, y, theta
 
-	try:
-		input("Press Enter to Stop\n")
-	except (Exception, KeyboardInterrupt):
-		pass
 
-	encoder0.close()
-	encoder1.close()
+encoder_left = encoder_init(serial_number, encoder_left_hub_port)
+encoder_right = encoder_init(serial_number, encoder_right_hub_port)
 
-main()
+try:	
+	while True:
+		(x,y,theta) = updatePosition(encoder_left, encoder_right, 0, 0, 0)
+		print(f"x: {round(x, 2)} mm, y: {round(y, 2)} mm, theta : {round(theta*180/np.pi, 2)}°")
+
+except (Exception, KeyboardInterrupt):
+	pass
+	encoder_left.close()
+	encoder_right.close()
+encoder_left.close()
+encoder_right.close()
+

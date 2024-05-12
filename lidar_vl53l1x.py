@@ -1,4 +1,11 @@
-import serial
+"""
+    @file        lidar_vl53l1x.py
+    @author      Mowibox (Ousmane THIONGANE)
+    @brief       
+    @version     1.0
+    @date        2024-
+    
+"""
 
 LIDAR_MODULE_NUMBER = 16
 LIDAR_FRAME_SIZE = 114
@@ -20,6 +27,8 @@ class AresLidar:
 
 # Function to retrieve LidarDistance data
 def get_lidar_data(lidar):
+    """
+    """
     reading_head = 0
     wait_for_head_cmp = 0
     wait_for_fill = 0
